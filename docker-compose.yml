@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./ 
+    ports:
+      - "3000:3000"
+    container_name: geodashboard-frontend
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    container_name: geodashboard-backend

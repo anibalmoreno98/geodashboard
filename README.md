@@ -1,70 +1,111 @@
-# Getting Started with Create React App
+GeoDashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Descripción
+GeoDashboard es una aplicación web orientada a la visualización de información geoespacial mediante un mapa interactivo. La aplicación está desarrollada con React e integra Leaflet como motor cartográfico.
+El sistema obtiene los datos desde un backend mock basado en JSON Server, lo que permite validar flujos de trabajo y comportamientos del frontend sin depender de una API definitiva.
+El proyecto está completamente contenerizado con Docker y orquestado mediante Docker Compose, garantizando portabilidad, reproducibilidad y facilidad de despliegue en entornos profesionales.
 
-## Available Scripts
+Objetivo del proyecto
+El propósito de GeoDashboard es servir como base técnica para el desarrollo de dashboards GIS, prototipos geoespaciales y aplicaciones que requieran visualización de datos sobre mapas.
+La arquitectura está diseñada para ser modular, extensible y alineada con prácticas habituales en entornos corporativos.
 
-In the project directory, you can run:
+Tecnologías utilizadas
+React
+Leaflet
+React-Leaflet
+JSON Server
+Axios
+Docker
+Docker Compose
 
-### `npm start`
+Estructura del proyecto
+geodashboard/
+│
+├── backend/
+│   ├── db.json
+│   └── Dockerfile
+│
+├── src/
+│   ├── App.js
+│   ├── index.js
+│   └── index.css
+│
+├── Dockerfile
+├── docker-compose.yml
+└── package.json
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Arquitectura del sistema
+El sistema se compone de dos servicios principales:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Frontend: aplicación React que renderiza el mapa, consume datos geoespaciales y gestiona la interfaz.
 
-### `npm test`
+Backend mock: servicio JSON Server que expone endpoints REST basados en el contenido de db.json..
+Ambos servicios se ejecutan en contenedores independientes y se comunican a través de la red interna generada por Docker Compose.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ejecución con Docker Compose
+Situarse en la carpeta raíz del proyecto.
+Construir y ejecutar los servicios:
+docker-compose up --build
 
-### `npm run build`
+Servicios disponibles:
+Frontend: http://localhost:3000
+Backend mock: http://localhost:4000/points
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Para detener los servicios:
+CTRL + C
+docker-compose down
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Backend mock
+El backend utiliza JSON Server y expone los datos definidos en backend/db.json.
+Ejemplo de contenido:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+{
+"points": [
+{ "id": 1, "name": "Punto A", "lat": 28.5, "lng": -13.8 }
+]
+}
 
-### `npm run eject`
+Los endpoints se generan automáticamente.
+Ejemplo:
+GET http://localhost:4000/points
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Añadir nuevos puntos
+Editar el archivo backend/db.json:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+{
+"points": [
+{ "id": 1, "name": "Punto A", "lat": 28.5, "lng": -13.8 },
+{ "id": 2, "name": "Punto B", "lat": 28.1, "lng": -15.4 }
+]
+}
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Después de modificar los datos, reconstruir:
+docker-compose up --build
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Funcionalidades principales
+Visualización cartográfica interactiva.
+Representación de puntos geoespaciales obtenidos dinámicamente desde el backend.
+Popups informativos asociados a cada marcador.
+Arquitectura modular preparada para ampliaciones futuras.
 
-## Learn More
+Comandos útiles
+Ejecutar React sin Docker:
+npm start
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Ejecutar JSON Server sin Docker:
+json-server --watch backend/db.json --port 4000
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Instalar dependencias:
+npm install
 
-### Code Splitting
+Líneas de evolución recomendadas
+Integración con APIs geoespaciales reales.
+Incorporación de capas adicionales (satélite, híbrido, topográfico).
+Implementación de clustering para grandes volúmenes de puntos.
+Añadido de paneles de control y filtros avanzados.
+Integración con sistemas de autenticación corporativos.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Licencia
+Este proyecto se proporciona exclusivamente con fines educativos, de experimentación
+y validación técnica. No está destinado a entornos de producción ni a su uso en sistemas
+operativos reales. Puede emplearse libremente para aprendizaje, pruebas internas y desarrollo de prototipos.
