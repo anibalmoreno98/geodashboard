@@ -21,3 +21,40 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# --- Additional professional ignores (React + Docker) ---
+
+# Environment files
+.env
+.env.backup
+.env.example
+
+# Dist / build tools
+/dist
+/.cache
+.cache/
+.tmp/
+temp/
+
+# Logs
+logs
+*.log
+*.log.*
+log/
+
+# Editor folders
+.vscode/
+.idea/
+*.swp
+
+# OS files
+Thumbs.db
+
+# Docker
+docker-data/
+docker-volume/
+*.pid
+docker-compose.override.yml
+
+# Misc
+*.cache
