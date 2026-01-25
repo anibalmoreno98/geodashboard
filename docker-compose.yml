@@ -1,14 +1,48 @@
 version: "3.9"
 
 services:
-  frontend:
-    build: ./ 
+  db:
+    image: postgres:15
+    container_name: geodb
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: geodashboard
     ports:
-      - "3000:3000"
-    container_name: geodashboard-frontend
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: geobackend
+    depends_on:
+      db:
+        condition: service_started
     ports:
       - "4000:4000"
-    container_name: geodashboard-backend
+    restart: always
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: geofrontend
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    restart: always
+
+
+
+volumes:
+  pgdata:

@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { usePoints } from "../hooks/usePoints";
 import LocateButton from "./LocateButton";
 
 const icon = L.icon({
@@ -12,19 +9,15 @@ const icon = L.icon({
   iconAnchor: [12, 41]
 });
 
-export default function MapView() {
-  const { points, loading } = usePoints();
-
-  if (loading) return <p>Cargando puntos...</p>;
-
+export default function MapView({ points }) {
   return (
     <MapContainer
       center={[28.5, -13.8]}
       zoom={8}
       style={{ height: "100%", width: "100%" }}
     >
+      <LocateButton />
 
-        <LocateButton />
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
