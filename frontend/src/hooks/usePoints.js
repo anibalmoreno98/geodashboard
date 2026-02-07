@@ -46,5 +46,7 @@ export function usePoints() {
   };
 
   return { points, loading, createPoint, deletePoint };
-  
+
+  // implementar crud con arquitectura MVC
+
 }
