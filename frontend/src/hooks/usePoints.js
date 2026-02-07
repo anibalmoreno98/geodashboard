@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getPoints, createPoint as createPointService, deletePoint as deletePointService } from "../services/pointsService";
+import {
+  getPoints,
+  createPoint as createPointService,
+  deletePoint as deletePointService,
+} from "../services/pointsService";
 
 export function usePoints() {
   const [points, setPoints] = useState([]);
@@ -7,28 +11,40 @@ export function usePoints() {
 
   // Cargar puntos al inicio
   useEffect(() => {
-    getPoints()
-      .then(res => {
-        setPoints(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
+    const fetchData = async () => {
+      try {
+        const data = await getPoints(); // JSON directo
+        setPoints(data);
+      } catch (err) {
         console.error("Error cargando puntos:", err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   // Crear punto
   const createPoint = async (newPoint) => {
-    const res = await createPointService(newPoint);
-    setPoints([...points, res.data]);
+    try {
+      const created = await createPointService(newPoint);
+      setPoints((prev) => [...prev, created]);
+    } catch (err) {
+      console.error("Error creando punto:", err);
+    }
   };
 
   // Eliminar punto
   const deletePoint = async (id) => {
-    await deletePointService(id);
-    setPoints(points.filter(p => p.id !== id));
+    try {
+      await deletePointService(id);
+      setPoints((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error("Error eliminando punto:", err);
+    }
   };
 
   return { points, loading, createPoint, deletePoint };
+  
 }

@@ -1,19 +1,30 @@
-import axios from "axios";
+const API_URL = "http://localhost:4000";
 
-const API = "http://localhost:4000";
-
-export function getPoints() {
-  return axios.get(`${API}/points`);
+// Obtener todos los puntos
+export async function getPoints() {
+  const res = await fetch(`${API_URL}/points`);
+  if (!res.ok) throw new Error("Error obteniendo puntos");
+  return await res.json(); // JSON directo
 }
 
-export function createPoint(data) {
-  return axios.post(`${API}/points`, data);
+// Crear un punto
+export async function createPoint(newPoint) {
+  const res = await fetch(`${API_URL}/points`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newPoint),
+  });
+
+  if (!res.ok) throw new Error("Error creando punto");
+  return await res.json();
 }
 
-export function updatePoint(id, data) {
-  return axios.put(`${API}/points/${id}`, data);
-}
+// Eliminar un punto
+export async function deletePoint(id) {
+  const res = await fetch(`${API_URL}/points/${id}`, {
+    method: "DELETE",
+  });
 
-export function deletePoint(id) {
-  return axios.delete(`${API}/points/${id}`);
+  if (!res.ok) throw new Error("Error eliminando punto");
+  return true;
 }
